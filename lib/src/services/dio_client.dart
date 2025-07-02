@@ -10,7 +10,8 @@ class DioClient {
       onRequest: (options, handler) async {
         final token = await tokenStorageService.getAccessToken();
         if (token != null) {
-          options.headers['Authorization'] = 'Bearer $token';        
+          options.headers['Authorization'] = 'Bearer $token';
+          options.headers['x-api-key'] = 'reqres-free-v1';
         }
 
         handler.next(options);
@@ -22,6 +23,7 @@ class DioClient {
           if (refreshToken != null) {
             try {
               // Call the refresh endpoint
+              throw UnimplementedError('No Mock refresh mechanism at the moment');
             } catch (e) {
               await tokenStorageService.clearTokens();
               // Optionally, redirect to login

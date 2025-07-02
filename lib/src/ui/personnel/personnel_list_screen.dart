@@ -4,29 +4,29 @@ import 'package:hr_self_service/src/ui/personnel/personnel_card.dart';
 import '../../providers/personnel_provider.dart';
 
 class PersonnelListScreen extends ConsumerWidget {
-    const PersonnelListScreen({super.key});
+  const PersonnelListScreen({super.key});
 
-    @override
-    Widget build(BuildContext context, WidgetRef ref) {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final personnelAsync = ref.watch(personnelProvider);
 
     return Scaffold(
-        appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: const Text('Personnel List')
+      appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: const Text('Personnel List')
+      ),
+      body: personnelAsync.when(
+        data: (personnelList) => ListView.builder(
+          itemCount: personnelList.length,
+          itemBuilder: (context, index) {
+            final personnel = personnelList[index];
+            
+            return PersonnelCard(personnel: personnel);
+          },
         ),
-        body: personnelAsync.when(
-            data: (personnelList) => ListView.builder(
-                itemCount: personnelList.length,
-                itemBuilder: (context, index) {
-                    final personnel = personnelList[index];
-                    
-                    return PersonnelCard(personnel: personnel);
-                },
-            ),
-            error: (error, stack) => Center(child: Text('Error: $error')),
-            loading: () => Center(child: CircularProgressIndicator())
-        ),
+        error: (error, stack) => Center(child: Text('Error: $error')),
+        loading: () => Center(child: CircularProgressIndicator())
+      ),
     );
   }
 }
