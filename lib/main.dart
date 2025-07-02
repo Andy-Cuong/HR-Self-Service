@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hr_self_service/src/ui/personnel_list_screen.dart';
+import 'package:hr_self_service/src/ui/login/login_screen.dart';
+import 'package:hr_self_service/src/ui/personnel/personnel_list_screen.dart';
 
 void main() {
   runApp(
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const PersonnelListScreen(),
+      home: const LoginScreen(),
     );
   }
 }
