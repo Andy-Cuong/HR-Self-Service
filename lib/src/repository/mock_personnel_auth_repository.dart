@@ -7,9 +7,7 @@ class MockPersonnelAuthRepository implements PersonnelAuthRepository {
   final TokenStorageService tokenStorageService;
   final DioClient dioClient;
 
-  MockPersonnelAuthRepository(this.tokenStorageService, this.dioClient) {
-    
-  }
+  MockPersonnelAuthRepository(this.tokenStorageService, this.dioClient);
 
   @override
   Future<void> changePassword(String oldPassword, String newPassword) {
