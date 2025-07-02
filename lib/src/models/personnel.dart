@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Personnel {
   final String name;
@@ -41,7 +40,3 @@ class PersonnelModel {
     return jsonList.map((entry) => Personnel.fromJson(entry)).toList();
   }
 }
-
-final personnelProvider = FutureProvider<List<Personnel>>((ref) async {
-  return await PersonnelModel.loadPersonnelFromJson();
-});

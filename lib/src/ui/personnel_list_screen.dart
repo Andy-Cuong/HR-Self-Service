@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hr_self_service/src/ui/personnel_card.dart';
-import '../models/personnel.dart';
+import '../providers/personnel_provider.dart';
 
 class PersonnelListScreen extends ConsumerWidget {
     const PersonnelListScreen({super.key});
