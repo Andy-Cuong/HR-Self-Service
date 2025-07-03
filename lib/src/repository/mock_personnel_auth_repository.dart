@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:hr_self_service/src/models/personnel.dart';
 import 'package:hr_self_service/src/repository/personnel_auth_repository.dart';
 import 'package:hr_self_service/src/services/dio_client.dart';
@@ -30,7 +31,7 @@ class MockPersonnelAuthRepository implements PersonnelAuthRepository {
 
   @override
   Future<Personnel?> login(String email, String password) async {
-    // Mock: accept any email/password combination, return a mock Personnel and save tokens
+    // Mock: Use 'george.bluth@reqres.in' as email and any password, return a mock Personnel and save tokens
     if (email.isNotEmpty && password.isNotEmpty) {
       try {
         final response = await dioClient.dio.post(
@@ -51,9 +52,9 @@ class MockPersonnelAuthRepository implements PersonnelAuthRepository {
         );
         
         return _currentPersonnel;
-      } catch (e) {
+      } on DioException catch (e) {
         // Error handling
-        print(e.toString());
+        print(e.response);
         return null;
       }
     }

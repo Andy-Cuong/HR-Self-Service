@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../providers/auth_provider.dart';
+import '../personnel/personnel_list_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isPasswordHidden = true;
+  bool _isLoading = false;
+  String? _error;
 
   @override
   void dispose() {
@@ -19,11 +24,35 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _onLoginPressed() {
+  Future<void> _onLoginPressed() async {
+
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
-    // TODO: Implement login logic
+    final authRepo = ref.read(mockPersonnelAuthRepository); // Get the repository from provider
+    final user = await authRepo.login(email, password);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (user != null) {
+      // Navigate to PersonnelListScreen and replace the login screen
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const PersonnelListScreen()),
+        );
+      }
+    } else {
+      setState(() {
+        _error = 'Login failed. Please check your credentials.';
+      });
+    }
 
     print('Email: $email, Password: $password');
   }
@@ -53,9 +82,9 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: _passwordController,
               decoration: InputDecoration(
                 labelText: 'Password',
-                prefix: const Icon(Icons.password),
+                prefixIcon: const Icon(Icons.password),
                 border: const OutlineInputBorder(),
-                suffix: IconButton(
+                suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
                       _isPasswordHidden = !_isPasswordHidden;
@@ -75,9 +104,23 @@ class _LoginScreenState extends State<LoginScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: _onLoginPressed,
-                child: const Text('Login'),
+                child: _isLoading
+                  ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                  : const Text('Login'),
               ),
-            )
+            ),
+
+            const SizedBox(height: 24),
+
+            if (_error != null)
+              Text(
+                _error!,
+                style: const TextStyle(color: Colors.red),
+              )
           ],
         ),
       ),

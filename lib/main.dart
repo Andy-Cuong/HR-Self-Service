@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hr_self_service/src/ui/login/login_screen.dart';
-import 'package:hr_self_service/src/ui/personnel/personnel_list_screen.dart';
 
 void main() {
   runApp(
