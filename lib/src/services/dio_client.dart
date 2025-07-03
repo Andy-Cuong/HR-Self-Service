@@ -11,8 +11,8 @@ class DioClient {
         final token = await tokenStorageService.getAccessToken();
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';
-          options.headers['x-api-key'] = 'reqres-free-v1';
         }
+        options.headers['x-api-key'] = 'reqres-free-v1';
 
         handler.next(options);
       },

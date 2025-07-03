@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:hr_self_service/src/models/personnel.dart';
 import 'package:hr_self_service/src/repository/personnel_auth_repository.dart';
 import 'package:hr_self_service/src/services/dio_client.dart';
@@ -51,9 +52,9 @@ class MockPersonnelAuthRepository implements PersonnelAuthRepository {
         );
         
         return _currentPersonnel;
-      } catch (e) {
+      } on DioException catch (e) {
         // Error handling
-        print(e.toString());
+        print(e.response);
         return null;
       }
     }
