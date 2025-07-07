@@ -3,7 +3,7 @@ import 'token_storage_service.dart';
 
 class DioClient {
   final Dio dio = Dio();
-  final TokenStorageService tokenStorageService;
+  final StorageService tokenStorageService;
 
   DioClient(this.tokenStorageService) {
     dio.interceptors.add(InterceptorsWrapper(
@@ -25,6 +25,7 @@ class DioClient {
               // Call the refresh endpoint
               throw UnimplementedError('No Mock refresh mechanism at the moment');
             } catch (e) {
+              print(e);
               await tokenStorageService.clearTokens();
               // Optionally, redirect to login
             }

@@ -5,7 +5,7 @@ import 'package:hr_self_service/src/services/dio_client.dart';
 import 'package:hr_self_service/src/services/token_storage_service.dart';
 
 class MockPersonnelAuthRepository implements PersonnelAuthRepository {
-  final TokenStorageService tokenStorageService;
+  final StorageService tokenStorageService;
   final DioClient dioClient;
 
   Personnel? _currentPersonnel;
@@ -32,34 +32,32 @@ class MockPersonnelAuthRepository implements PersonnelAuthRepository {
   @override
   Future<Personnel?> login(String email, String password) async {
     // Mock: Use 'george.bluth@reqres.in' as email and any password, return a mock Personnel and save tokens
-    if (email.isNotEmpty && password.isNotEmpty) {
-      try {
-        final response = await dioClient.dio.post(
-          'https://reqres.in/api/login',
-          data: {
-            'email': email,
-            'password': password
-          }
-        );
-        final token = response.data['token'];
-        await tokenStorageService.saveTokens(token, 'mock_refresh_token');
-        
-        _currentPersonnel = Personnel(
-          name: 'Mock User',
-          title: 'Developer', 
-          email: email, 
-          phoneNumber: '0123789456'
-        );
-        
-        return _currentPersonnel;
-      } on DioException catch (e) {
-        // Error handling
-        print(e.response);
-        return null;
-      }
-    }
+    try {
+      final response = await dioClient.dio.post(
+        'https://reqres.in/api/login',
+        data: {
+          'email': email,
+          'password': password
+        }
+      );
+      final token = response.data['token'];
+      await tokenStorageService.saveTokens(token, 'mock_refresh_token');
 
-    return null;
+      print('Email: $email, password: $password');
+      
+      _currentPersonnel = Personnel(
+        name: 'Mock User',
+        title: 'Developer', 
+        email: email, 
+        phoneNumber: '0123789456'
+      );
+      
+      return _currentPersonnel;
+    } on DioException catch (e) {
+      // Error handling
+      print(e.response);
+      return null;
+    }
   }
 
   @override

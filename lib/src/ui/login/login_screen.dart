@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/auth_provider.dart';
+import 'package:hr_self_service/src/ui/login/login_action.dart';
+import 'package:hr_self_service/src/ui/login/login_provider.dart';
 import '../personnel/personnel_list_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -13,9 +14,6 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isPasswordHidden = true;
-  bool _isLoading = false;
-  String? _error;
 
   @override
   void dispose() {
@@ -24,41 +22,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
   }
 
-  Future<void> _onLoginPressed() async {
-
-    setState(() {
-      _isLoading = true;
-      _error = null;
-    });
-
-    final email = _emailController.text.trim();
-    final password = _passwordController.text;
-
-    final authRepo = ref.read(mockPersonnelAuthRepository); // Get the repository from provider
-    final user = await authRepo.login(email, password);
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    if (user != null) {
-      // Navigate to PersonnelListScreen and replace the login screen
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const PersonnelListScreen()),
-        );
-      }
-    } else {
-      setState(() {
-        _error = 'Login failed. Please check your credentials.';
-      });
-    }
-
-    print('Email: $email, Password: $password');
-  }
-
   @override
   Widget build(BuildContext context) {
+    ref.listen(loginViewModelProvider, (previous, next) { // Listen to state change
+      if (next.isLoginSuccessful && !next.isLoading && next.error.isEmpty) {
+        // Successful login
+        if (mounted) {
+          Navigator.of(context).pushReplacement( // Use push() to keep the departed screen on the nav stack
+            MaterialPageRoute(builder: (_) => const PersonnelListScreen())
+          );
+        }
+      }
+    });
+
+    final viewModel = ref.read(loginViewModelProvider.notifier);
+    final state = ref.watch(loginViewModelProvider);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
       body: Padding(
@@ -74,6 +53,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              autofocus: true,
             ),
 
             const SizedBox(height: 16),
@@ -86,16 +67,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 border: const OutlineInputBorder(),
                 suffixIcon: IconButton(
                   onPressed: () {
-                    setState(() {
-                      _isPasswordHidden = !_isPasswordHidden;
-                    });
+                    viewModel.onAction(OnTogglePasswordVisibility());
                   },
                   icon: Icon(
-                    _isPasswordHidden ? Icons.visibility_off : Icons.visibility,
+                    state.isPasswordHidden ? Icons.visibility_off : Icons.visibility,
                   ),
                 )
               ),
-              obscureText: _isPasswordHidden,
+              textInputAction: TextInputAction.done,
+              obscureText: state.isPasswordHidden,
             ),
 
             const SizedBox(height: 24),
@@ -103,8 +83,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _onLoginPressed,
-                child: _isLoading
+                onPressed: state.isLoading ? null : _onLoginPressed, // Make sure there is only one ongoing request
+                child: state.isLoading
                   ? const SizedBox(
                     width: 20,
                     height: 20,
@@ -116,13 +96,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
             const SizedBox(height: 24),
 
-            if (_error != null)
+            if (state.error.isNotEmpty)
               Text(
-                _error!,
+                state.error,
                 style: const TextStyle(color: Colors.red),
               )
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> _onLoginPressed() async {
+    final viewModel = ref.read(loginViewModelProvider.notifier);
+    await viewModel.onAction(
+      OnLoginClick(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
       ),
     );
   }
