@@ -49,6 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               controller: _emailController,
               decoration: const InputDecoration(
                 labelText: 'Email',
+                hintText: 'george.bluth@reqres.in',
                 prefixIcon: Icon(Icons.email),
                 border: OutlineInputBorder(),
               ),

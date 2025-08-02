@@ -1,13 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hr_self_service/src/data/providers/auth_provider.dart';
+import 'package:hr_self_service/src/repository/personnel_auth_repository.dart';
 import 'package:hr_self_service/src/ui/login/login_action.dart';
 import 'package:hr_self_service/src/ui/login/login_state.dart';
 import 'package:hr_self_service/src/utils/validator.dart';
 
 class LoginViewModel extends StateNotifier<LoginState> {
   final Ref ref;
+  final PersonnelAuthRepository authRepo;
 
-  LoginViewModel(this.ref) : super(LoginState());
+  LoginViewModel(this.ref, this.authRepo) : super(LoginState());
 
   Future<void> onAction(LoginAction action) async {
     switch (action) {
@@ -32,7 +33,6 @@ class LoginViewModel extends StateNotifier<LoginState> {
           error: null
         );
 
-        final authRepo = ref.read(mockPersonnelAuthRepository);
         final user = await authRepo.login(email, password);
         final errorMessage = user == null ? 'Login failed. Please check your credentials.' : '';
         
