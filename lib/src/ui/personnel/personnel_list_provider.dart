@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hr_self_service/src/data/providers/personnel_repository_provider.dart';
-import 'package:hr_self_service/src/models/personnel.dart';
+import 'package:hr_self_service/src/domain/models/personnel.dart';
 import 'package:hr_self_service/src/ui/personnel/personnel_list_state.dart';
 import 'package:hr_self_service/src/ui/personnel/personnel_list_viewmodel.dart';
 

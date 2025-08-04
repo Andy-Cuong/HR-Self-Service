@@ -1,6 +1,7 @@
-import 'package:hr_self_service/src/models/personnel.dart';
+import 'package:hr_self_service/src/domain/models/personnel.dart';
 
 abstract class PersonnelRepository {
+  Future<void> fetchPersonnel();
   Stream<List<Personnel>> getAllPersonnel();
   Future<Personnel?> getPersonnelById(int id);
   Future<int> addPersonnel(Personnel personnel);

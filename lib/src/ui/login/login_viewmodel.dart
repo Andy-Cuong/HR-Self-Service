@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hr_self_service/src/repository/personnel_auth_repository.dart';
+import 'package:hr_self_service/src/domain/repository/personnel_auth_repository.dart';
 import 'package:hr_self_service/src/ui/login/login_action.dart';
 import 'package:hr_self_service/src/ui/login/login_state.dart';
-import 'package:hr_self_service/src/utils/validator.dart';
+import 'package:hr_self_service/src/domain/utils/validator.dart';
 
 class LoginViewModel extends StateNotifier<LoginState> {
   final Ref ref;

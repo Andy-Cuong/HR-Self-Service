@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:hr_self_service/src/models/personnel.dart';
-import 'package:hr_self_service/src/repository/personnel_auth_repository.dart';
-import 'package:hr_self_service/src/services/dio_client.dart';
-import 'package:hr_self_service/src/services/token_storage_service.dart';
+import 'package:hr_self_service/src/domain/models/personnel.dart';
+import 'package:hr_self_service/src/domain/repository/personnel_auth_repository.dart';
+import 'package:hr_self_service/src/data/services/dio_client.dart';
+import 'package:hr_self_service/src/data/services/token_storage_service.dart';
 
 class MockPersonnelAuthRepository implements PersonnelAuthRepository {
   final StorageService tokenStorageService;

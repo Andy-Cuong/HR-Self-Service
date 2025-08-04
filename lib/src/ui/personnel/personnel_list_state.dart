@@ -1,4 +1,4 @@
-import 'package:hr_self_service/src/models/personnel.dart';
+import 'package:hr_self_service/src/domain/models/personnel.dart';
 
 class PersonnelListState {
   final List<Personnel> personnelList;

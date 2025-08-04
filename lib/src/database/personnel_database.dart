@@ -1,4 +1,4 @@
-import 'package:hr_self_service/src/models/personnel.dart';
+import 'package:hr_self_service/src/domain/models/personnel.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
