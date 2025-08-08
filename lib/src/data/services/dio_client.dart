@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'token_storage_service.dart';
+import 'storage_service.dart';
 
 class DioClient {
   final Dio dio = Dio();

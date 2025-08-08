@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 class Personnel {
+  final int? id;
   final String name;
   final String title;
   final String email;
   final String phoneNumber;
 
   Personnel({
+    this.id,
     required this.name,
     required this.title,
     required this.email,
@@ -16,6 +18,7 @@ class Personnel {
 
   factory Personnel.fromJson(Map<String, dynamic> json) {
     return Personnel(
+      id: json['id'] as int?,
       name: json['name'] as String,
       title: json['title'] as String,
       email: json['email'] as String,
@@ -24,12 +27,17 @@ class Personnel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    final Map<String, dynamic> json = {
       'name': name,
       'title': title,
       'email': email,
       'phoneNumber': phoneNumber,
     };
+    if (id != null) {
+      json['id'] = id;
+    }
+
+    return json;
   }
 }
 

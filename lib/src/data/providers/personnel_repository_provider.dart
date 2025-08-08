@@ -19,6 +19,7 @@ final personnelRepositoryProvider = FutureProvider<PersonnelRepository>((ref) as
 
 final remoteDataSourceProvider = Provider<RemoteDataSource>((ref) =>
   DioRemoteDataSource(
-    ref.read(dioClientProvider)
+    ref.read(dioClientProvider),
+    ref.read(storageServiceProvider)
   )
 );

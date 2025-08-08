@@ -62,20 +62,6 @@ class SqflitePersonnelRepository implements PersonnelRepository {
   Stream<List<Personnel>> getAllPersonnel() => _personnelController.stream;
 
   @override
-  Future<int> addPersonnel(Personnel personnel) async {
-    try {
-      final result = await database.insert('personnel', personnel.toJson());
-      _emitPersonnel();
-
-      return result;
-    } catch (e, stack) {
-      print('Error adding personnel: $e');
-      print('Stack trace: $stack');
-      return -1;
-    }
-  }
-
-  @override
   Future<Personnel?> getPersonnelById(int id) async {
     try {
       List<Map<String, dynamic>> queryPersonnels = await database.query(
@@ -95,15 +81,20 @@ class SqflitePersonnelRepository implements PersonnelRepository {
     return null;
   }
 
+  //TODO: Call remote data source CRUD method too
   @override
-  Future<int> deletePersonnel(int id) async {
+  Future<int> addPersonnel(Personnel personnel) async {
     try {
-      final result = await database.delete('personnel', where: 'id = ?', whereArgs: [id]);
+      final result = await database.insert('personnel', personnel.toJson());
       _emitPersonnel();
+
+      if (result != 0) {
+        remoteDataSource.addPersonnel(personnel);
+      }
 
       return result;
     } catch (e, stack) {
-      print('Error deleting personnel: $e');
+      print('Error adding personnel: $e');
       print('Stack trace: $stack');
       return -1;
     }
@@ -120,9 +111,31 @@ class SqflitePersonnelRepository implements PersonnelRepository {
       );
       _emitPersonnel();
 
+      if (result > 0) {
+        remoteDataSource.updatePersonnel(id, personnel);
+      }
+
       return result;
     } catch (e, stack) {
       print('Error updating personnel: $e');
+      print('Stack trace: $stack');
+      return -1;
+    }
+  }
+
+  @override
+  Future<int> deletePersonnel(int id) async {
+    try {
+      final result = await database.delete('personnel', where: 'id = ?', whereArgs: [id]);
+      _emitPersonnel();
+
+      if (result > 0) {
+        remoteDataSource.deletePersonnel(id);
+      }
+
+      return result;
+    } catch (e, stack) {
+      print('Error deleting personnel: $e');
       print('Stack trace: $stack');
       return -1;
     }
