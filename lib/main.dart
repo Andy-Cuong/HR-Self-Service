@@ -1,43 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hr_self_service/src/data/services/app_lock_service.dart';
 import 'package:hr_self_service/src/ui/login/login_screen.dart';
 
 void main() {
   runApp(
     const ProviderScope(
-      child: MyApp(),
-    )
+      child: MyApp()
+    ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<StatefulWidget> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  bool _locked = true;
+  bool _authenticating = false;
+  final _appLockService = AppLockService();
+  DateTime? _backgroundedAt;
+  final Duration lockThreshold = const Duration(seconds: 10);
+
+  _MyAppState() {
+    didChangeAppLifecycleState(AppLifecycleState.resumed);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (_backgroundedAt == null &&
+      (state == AppLifecycleState.paused || state == AppLifecycleState.inactive)) {
+      
+      // Only record if there is no previous record
+      _backgroundedAt = DateTime.now();
+    }
+    
+    if (state == AppLifecycleState.resumed) {
+      if (_backgroundedAt != null && DateTime.now().difference(_backgroundedAt!) > lockThreshold) {
+        setState(() => _locked = true);
+      }
+
+      if (_locked) {
+        _authenticating = true;
+        final unlocked = await _appLockService.authenticate();
+        setState(() => _locked = !unlocked);
+        _authenticating = false;
+      }
+
+      _backgroundedAt = null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'HR Self Service',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const LoginScreen(),
+      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+      home: _locked
+      ? Scaffold(
+        body: Center(
+          child: _authenticating
+          ? CircularProgressIndicator()
+          : Text('Please Authenticate')
+        )
+        )
+      : const LoginScreen()
     );
   }
 }
-

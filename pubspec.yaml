@@ -46,6 +46,7 @@ dependencies:
   path: ^1.9.1
   connectivity_plus: ^6.1.4
   crypto: ^3.0.6
+  local_auth: ^2.3.0
 
 dev_dependencies:
   flutter_test:

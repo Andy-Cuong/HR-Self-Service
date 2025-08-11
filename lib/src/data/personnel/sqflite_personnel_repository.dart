@@ -81,7 +81,6 @@ class SqflitePersonnelRepository implements PersonnelRepository {
     return null;
   }
 
-  //TODO: Call remote data source CRUD method too
   @override
   Future<int> addPersonnel(Personnel personnel) async {
     try {
