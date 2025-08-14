@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hr_self_service/src/ui/personnel/personnel_card.dart';
 import 'package:hr_self_service/src/ui/personnel/personnel_list_provider.dart';
+import 'package:hr_self_service/src/ui/settings/setting_screen.dart';
 
 class PersonnelListScreen extends ConsumerWidget {
   const PersonnelListScreen({super.key});
@@ -13,8 +14,18 @@ class PersonnelListScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+          title: const Text('Personnel List'),
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: const Text('Personnel List')
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => SettingScreen())
+                );
+              },
+              icon: Icon(Icons.settings)
+            ),
+          ],
       ),
       body: personnelListAsync.when(
         data: (personnelList) => 

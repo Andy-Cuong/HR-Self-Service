@@ -9,11 +9,11 @@ import 'package:sqflite/sqflite.dart';
 class SqflitePersonnelRepository implements PersonnelRepository {
   final RemoteDataSource remoteDataSource;
   final Database database;
-  final Connectivity connectivity;
+  final connectivity = Connectivity();
 
   final _personnelController = StreamController<List<Personnel>>.broadcast();
 
-  SqflitePersonnelRepository(this.remoteDataSource, this.database, this.connectivity) {
+  SqflitePersonnelRepository(this.remoteDataSource, this.database) {
     // Listen to connectivity changes
     connectivity.onConnectivityChanged.listen((statuses) async {
       if (statuses.any((status) => status != ConnectivityResult.none)) { // Status changes to online

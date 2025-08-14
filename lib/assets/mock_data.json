@@ -26,5 +26,19 @@
     "title": "QA Engineer",
     "email": "david.pham@example.com",
     "phoneNumber": "+84 977 654 321"
+  },
+  {
+    "id": 5,
+    "name": "Emily Truong",
+    "title": "Data Analyst",
+    "email": "emily.truong@example.com",
+    "phoneNumber": "+84 846 255 001"
+  },
+  {
+    "id": 6,
+    "name": "Frank Dinh",
+    "title": "HR Manager",
+    "email": "frank.dinh@example.com",
+    "phoneNumber": "+84 989 545 212"
   }
 ]

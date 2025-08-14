@@ -47,6 +47,7 @@ dependencies:
   connectivity_plus: ^6.1.4
   crypto: ^3.0.6
   local_auth: ^2.3.0
+  flutter_colorpicker: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -103,6 +104,20 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  #
+  
+  fonts:
+    - family: Open Sans
+      fonts:
+        - asset: lib/assets/fonts/Open_Sans/static/OpenSans-Regular.ttf
+    - family: Lato
+      fonts:
+        - asset: lib/assets/fonts/Lato/Lato-Regular.ttf
+    - family: Montserrat
+      fonts:
+        - asset: lib/assets/fonts/Montserrat/static/Montserrat-Regular.ttf
+    - family: Noto Sans
+      fonts:
+        - asset: lib/assets/fonts/Noto_Sans/static/NotoSans-Regular.ttf
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

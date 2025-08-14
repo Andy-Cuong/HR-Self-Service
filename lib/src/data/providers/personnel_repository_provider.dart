@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hr_self_service/src/data/personnel/dio_remote_data_source.dart';
 import 'package:hr_self_service/src/data/personnel/sqflite_personnel_repository.dart';
@@ -12,8 +11,7 @@ final personnelRepositoryProvider = FutureProvider<PersonnelRepository>((ref) as
 
   return SqflitePersonnelRepository(
     ref.read(remoteDataSourceProvider),
-    database,
-    Connectivity()
+    database
   );
 });
 

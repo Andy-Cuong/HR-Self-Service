@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hr_self_service/src/data/services/app_lock_service.dart';
 import 'package:hr_self_service/src/ui/login/login_screen.dart';
+import 'package:hr_self_service/src/ui/settings/setting_provider.dart';
 
 void main() {
   runApp(
@@ -11,14 +12,14 @@ void main() {
   );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  State<StatefulWidget> createState() => _MyAppState();
+  ConsumerState<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   bool _locked = true;
   bool _authenticating = false;
   final _appLockService = AppLockService();
@@ -68,10 +69,25 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final savedSettingAsync = ref.watch(savedSettingProvider);
+    final settings = ref.watch(settingProvider);
+
+    // Load the saved settings into the global settings
+    savedSettingAsync.whenData((setting) => ref.read(settingProvider.notifier).state = setting);
 
     return MaterialApp(
       title: 'HR Self Service',
-      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: settings.seedColor),
+        fontFamily: settings.fontFamily,
+        brightness: Brightness.light
+      ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: settings.seedColor, brightness: Brightness.dark),
+        fontFamily: settings.fontFamily,
+        brightness: Brightness.dark
+      ),
+      themeMode: ThemeMode.system,
       home: _locked
       ? Scaffold(
         body: Center(

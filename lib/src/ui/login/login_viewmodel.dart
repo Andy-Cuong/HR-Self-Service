@@ -5,10 +5,9 @@ import 'package:hr_self_service/src/ui/login/login_state.dart';
 import 'package:hr_self_service/src/domain/utils/validator.dart';
 
 class LoginViewModel extends StateNotifier<LoginState> {
-  final Ref ref;
   final PersonnelAuthRepository authRepo;
 
-  LoginViewModel(this.ref, this.authRepo) : super(LoginState());
+  LoginViewModel(this.authRepo) : super(LoginState());
 
   Future<void> onAction(LoginAction action) async {
     switch (action) {

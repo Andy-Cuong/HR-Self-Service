@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/services.dart';
 
 class Personnel {
@@ -45,6 +46,8 @@ class PersonnelModel {
   static Future<List<Personnel>> loadPersonnelFromJson() async {
     final String jsonString = await rootBundle.loadString('lib/assets/mock_data.json');
     final List<dynamic> jsonList = json.decode(jsonString);
-    return jsonList.map((entry) => Personnel.fromJson(entry)).toList();
+    final size = Random().nextInt(jsonList.length - 2) + 3; // Simulate data change
+
+    return jsonList.map((entry) => Personnel.fromJson(entry)).take(size).toList();
   }
 }
