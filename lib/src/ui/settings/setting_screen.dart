@@ -13,7 +13,6 @@ class SettingScreen extends ConsumerWidget {
     final viewModel = ref.read(settingViewModelProvider.notifier);
 
     return Scaffold(
-      // TODO: implement build
       appBar: AppBar(
         title: const Text('Settings'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,

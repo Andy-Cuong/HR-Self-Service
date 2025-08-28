@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "977675162441",
+    "project_id": "hr-self-service-edd1e",
+    "storage_bucket": "hr-self-service-edd1e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977675162441:android:1b81755f584b6ff86f0098",
+        "android_client_info": {
+          "package_name": "com.example.hr_self_service"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDxk6_0uexBPwHL009mZQ3GtN9PLMbM1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

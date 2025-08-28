@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hr_self_service/firebase_options.dart';
+import 'package:hr_self_service/src/data/providers/firebase_messaging_service_provider.dart';
 import 'package:hr_self_service/src/data/services/app_lock_service.dart';
 import 'package:hr_self_service/src/ui/login/login_screen.dart';
 import 'package:hr_self_service/src/ui/settings/setting_provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   runApp(
     const ProviderScope(
       child: MyApp()
@@ -20,6 +27,7 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
+  // App lock variables
   bool _locked = true;
   bool _authenticating = false;
   final _appLockService = AppLockService();
@@ -34,6 +42,10 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
+    // Firebase Messaging
+    final fcmService = ref.read(firebaseMessagingServiceProvider);
+    fcmService.init();
   }
 
   @override
