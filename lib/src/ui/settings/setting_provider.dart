@@ -5,11 +5,8 @@ import 'package:hr_self_service/src/ui/settings/setting_model.dart';
 import 'package:hr_self_service/src/ui/settings/setting_state.dart';
 import 'package:hr_self_service/src/ui/settings/setting_viewmodel.dart';
 
-final settingViewModelProvider = StateNotifierProvider<SettingViewModel, SettingState>(
-  (ref) => SettingViewModel(
-    ref,
-    ref.read(settingRepositoryProvider)
-  )
+final settingViewModelProvider = NotifierProvider<SettingViewModel, SettingState>(
+  SettingViewModel.new
 );
 
 final savedSettingProvider = FutureProvider<SettingModel>((ref) async {
@@ -17,8 +14,3 @@ final savedSettingProvider = FutureProvider<SettingModel>((ref) async {
   final savedSetting = await settingRepository.getCurrentSetting();
   return savedSetting ?? SettingModel(seedColor: Colors.deepPurple, fontFamily: 'Roboto');
 });
-
-// Global setting provider for the whole app
-final settingProvider = StateProvider<SettingModel>(
-  (ref) => SettingModel(seedColor: Colors.deepPurple, fontFamily: 'Roboto')
-);

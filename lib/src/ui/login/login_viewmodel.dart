@@ -1,13 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hr_self_service/src/data/providers/auth_provider.dart';
 import 'package:hr_self_service/src/domain/repository/personnel_auth_repository.dart';
 import 'package:hr_self_service/src/ui/login/login_action.dart';
 import 'package:hr_self_service/src/ui/login/login_state.dart';
 import 'package:hr_self_service/src/domain/utils/validator.dart';
 
-class LoginViewModel extends StateNotifier<LoginState> {
-  final PersonnelAuthRepository authRepo;
+class LoginViewModel extends Notifier<LoginState> {
+  late final PersonnelAuthRepository authRepo;
 
-  LoginViewModel(this.authRepo) : super(LoginState());
+  @override
+  LoginState build() {
+    authRepo = ref.read(mockPersonnelAuthRepositoryProvider);
+    return LoginState();
+  }
 
   Future<void> onAction(LoginAction action) async {
     switch (action) {
