@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hr_self_service/src/data/providers/setting_repository_provider.dart';
 import 'package:hr_self_service/src/domain/repository/setting_repository.dart';
 import 'package:hr_self_service/src/ui/settings/setting_action.dart';
-import 'package:hr_self_service/src/ui/settings/setting_provider.dart';
 import 'package:hr_self_service/src/ui/settings/setting_state.dart';
 
-class SettingViewModel extends StateNotifier<SettingState> {
-  final Ref ref;
-  final SettingRepository settingRepository;
+class SettingViewModel extends Notifier<SettingState> {
+  late final SettingRepository settingRepository;
 
-  SettingViewModel(this.ref, this.settingRepository) : super(SettingState()) {
+  @override
+  SettingState build() {
     _initiate();
+    return SettingState();
   }
 
   void onAction(SettingAction action) {
@@ -26,7 +27,7 @@ class SettingViewModel extends StateNotifier<SettingState> {
     state = state.copy(
       newSetting: state.currentSetting.copy(seedColor: newColor)
     );
-    ref.read(settingProvider.notifier).state = state.currentSetting;
+    // ref.read(settingProvider.notifier).state = state.currentSetting;
 
     settingRepository.saveSetting(state.currentSetting);
   }
@@ -35,12 +36,13 @@ class SettingViewModel extends StateNotifier<SettingState> {
     state = state.copy(
       newSetting: state.currentSetting.copy(fontFamily: newFontFamily)
     );
-    ref.read(settingProvider.notifier).state = state.currentSetting;
+    // ref.read(settingProvider.notifier).state = state.currentSetting;
 
     settingRepository.saveSetting(state.currentSetting);
   }
 
   void _initiate() async {
+    settingRepository = ref.read(settingRepositoryProvider);
     final savedSetting = await settingRepository.getCurrentSetting();
     state = state.copy(newSetting: savedSetting);
   }

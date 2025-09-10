@@ -4,8 +4,8 @@ import 'package:hr_self_service/src/domain/models/personnel.dart';
 import 'package:hr_self_service/src/ui/personnel/personnel_list_state.dart';
 import 'package:hr_self_service/src/ui/personnel/personnel_list_viewmodel.dart';
 
-final personnelListViewModelProvider = StateNotifierProvider<PersonnelListViewmodel, PersonnelListState>(
-  (ref) => PersonnelListViewmodel(ref),
+final personnelListViewModelProvider = NotifierProvider<PersonnelListViewmodel, PersonnelListState>(
+  PersonnelListViewmodel.new
 );
 
 // StreamProvider for personnel list

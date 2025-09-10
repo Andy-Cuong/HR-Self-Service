@@ -81,11 +81,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final savedSettingAsync = ref.watch(savedSettingProvider);
-    final settings = ref.watch(settingProvider);
-
-    // Load the saved settings into the global settings
-    savedSettingAsync.whenData((setting) => ref.read(settingProvider.notifier).state = setting);
+    final settings = ref.watch(settingViewModelProvider).currentSetting;
 
     return MaterialApp(
       title: 'HR Self Service',

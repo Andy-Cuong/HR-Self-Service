@@ -13,7 +13,7 @@ final dioClientProvider = Provider<DioClient>(
 );
 
 // Provide the repository, depending on both services
-final mockPersonnelAuthRepository = Provider<PersonnelAuthRepository>(
+final mockPersonnelAuthRepositoryProvider = Provider<PersonnelAuthRepository>(
   (ref) => MockPersonnelAuthRepository(
     ref.read(storageServiceProvider),
     ref.read(dioClientProvider)
