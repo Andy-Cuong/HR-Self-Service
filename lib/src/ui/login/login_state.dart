@@ -25,15 +25,13 @@ class LoginState {
     bool? isLoading,
     bool? isLoginSuccessful,
     String? error,
-  }) {
-    return LoginState(
-      email: email ?? this.email,
-      password: password ?? this.password,
-      isComboValid: isComboValid ?? this.isComboValid,
-      isPasswordHidden: isPasswordHidden ?? this.isPasswordHidden,
-      isLoading: isLoading ?? this.isLoading,
-      isLoginSuccessful: isLoginSuccessful ?? this.isLoginSuccessful,
-      error: error ?? this.error,
-    );
-  }
+  }) => LoginState(
+    email: email ?? this.email,
+    password: password ?? this.password,
+    isComboValid: isComboValid ?? this.isComboValid,
+    isPasswordHidden: isPasswordHidden ?? this.isPasswordHidden,
+    isLoading: isLoading ?? this.isLoading,
+    isLoginSuccessful: isLoginSuccessful ?? this.isLoginSuccessful,
+    error: error ?? this.error,
+  );
 }

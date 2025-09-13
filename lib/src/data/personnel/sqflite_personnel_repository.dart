@@ -140,6 +140,10 @@ class SqflitePersonnelRepository implements PersonnelRepository {
     }
   }
 
+  @override
+  Future<bool> checkInPersonnel(int id, String qrCodeValue) =>
+    remoteDataSource.checkInPersonnel(id, qrCodeValue);
+
   void dispose() {
     _personnelController.close();
   }

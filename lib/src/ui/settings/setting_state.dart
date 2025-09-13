@@ -12,9 +12,7 @@ class SettingState {
 
   SettingState copy({
     SettingModel? newSetting
-  }) {
-    return SettingState(
-      currentSetting: newSetting ?? currentSetting
-    );
-  }
+  }) => SettingState(
+    currentSetting: newSetting ?? currentSetting
+  );
 }

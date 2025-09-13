@@ -6,11 +6,11 @@ import 'package:hr_self_service/src/ui/login/login_state.dart';
 import 'package:hr_self_service/src/domain/utils/validator.dart';
 
 class LoginViewModel extends Notifier<LoginState> {
-  late final PersonnelAuthRepository authRepo;
+  late final PersonnelAuthRepository _authRepo;
 
   @override
   LoginState build() {
-    authRepo = ref.read(mockPersonnelAuthRepositoryProvider);
+    _authRepo = ref.read(mockPersonnelAuthRepositoryProvider);
     return LoginState();
   }
 
@@ -37,7 +37,7 @@ class LoginViewModel extends Notifier<LoginState> {
           error: null
         );
 
-        final user = await authRepo.login(email, password);
+        final user = await _authRepo.login(email, password);
         final errorMessage = user == null ? 'Login failed. Please check your credentials.' : '';
         
         state = state.copy(

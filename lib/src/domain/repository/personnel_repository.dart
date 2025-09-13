@@ -7,4 +7,5 @@ abstract class PersonnelRepository {
   Future<int> addPersonnel(Personnel personnel);
   Future<int> updatePersonnel(int id, Personnel personnel);
   Future<int> deletePersonnel(int id);
+  Future<bool> checkInPersonnel(int id, String qrCodeValue);
 }

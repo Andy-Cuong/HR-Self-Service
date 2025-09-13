@@ -9,9 +9,7 @@ class PersonnelListState {
 
   PersonnelListState copy({
     List<Personnel>? personnelList
-  }) {
-    return PersonnelListState(
-      personnelList: personnelList ?? this.personnelList
-    );
-  }
+  }) => PersonnelListState(
+    personnelList: personnelList ?? this.personnelList
+  );
 }

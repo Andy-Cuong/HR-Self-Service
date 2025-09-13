@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hr_self_service/src/ui/personnel/personnel_card.dart';
 import 'package:hr_self_service/src/ui/personnel/personnel_list_provider.dart';
+import 'package:hr_self_service/src/ui/qr_scanner/qr_scanner_screen.dart';
 import 'package:hr_self_service/src/ui/settings/setting_screen.dart';
 
 class PersonnelListScreen extends ConsumerWidget {
@@ -39,7 +40,16 @@ class PersonnelListScreen extends ConsumerWidget {
           ),
         error: (error, stackTrace) => Center(child: Text('Error: $error')),
         loading: () => const Center(child: CircularProgressIndicator())
-      ),    
+      ),
+      floatingActionButton: FloatingActionButton(
+        elevation: 10.0,
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => QRScannerScreen())
+          );
+        },
+        child: Icon(Icons.qr_code_2)
+      ),
     );
   }
 }

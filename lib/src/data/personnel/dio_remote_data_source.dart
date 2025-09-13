@@ -112,4 +112,26 @@ class DioRemoteDataSource implements RemoteDataSource {
       rethrow;
     }
   }
+
+  @override
+  Future<bool> checkInPersonnel(int id, qrCodeValue) async {
+    try {
+      final response = await dioClient.dio.put(
+        'https://reqres.in/api/checkin/$id',
+        data: {'qr': qrCodeValue}
+      );
+
+      if (response.statusCode! > 299) {
+        print('Error: Code ${response.statusCode} - ${response.statusMessage}');
+        return false;
+      }
+
+      print('Successfully checked in at ${response.data['updatedAt']}');
+      return true;
+    } on DioException catch (e) {
+      // Error handling
+      print(e);
+      return false;
+    }
+  }
 }
