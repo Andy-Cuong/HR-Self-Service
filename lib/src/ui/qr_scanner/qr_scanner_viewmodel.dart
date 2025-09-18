@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hr_self_service/src/data/providers/personnel_repository_provider.dart';
 import 'package:hr_self_service/src/domain/repository/personnel_repository.dart';
 import 'package:hr_self_service/src/ui/qr_scanner/qr_scanner_state.dart';
@@ -35,12 +34,6 @@ class QrScannerViewmodel extends Notifier<QrScannerState> {
         scannedData: '',
         checkedIn: checkInSuccessful,
         loadingCheckIn: false
-      );
-
-      final toastMessage = checkInSuccessful? 'Check-in successful.' : 'Check-in failed. Please try again.';
-      Fluttertoast.showToast(
-        msg: toastMessage,
-        toastLength: Toast.LENGTH_SHORT
       );
       
       return checkInSuccessful;
