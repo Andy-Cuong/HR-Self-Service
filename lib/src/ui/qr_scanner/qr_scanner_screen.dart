@@ -19,7 +19,7 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
     ref.listen(qrScannerViewModelProvider, (previous, next) {
       if (previous != null && previous.loadingCheckIn && !next.loadingCheckIn && !next.checkedIn) { // Check-in failed
         Fluttertoast.showToast(
-          msg: 'Check-in failed. Please try again',
+          msg: 'Check-in failed. Please try again.',
           toastLength: Toast.LENGTH_SHORT
         );
       }
@@ -40,28 +40,31 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
       appBar: AppBar(title: const Text('Scan QR Code to Check In')),
       body: Stack(
         children: [
-          Column(
-            children: [
-              Expanded(
-                flex: 4,
-                child: MobileScanner(
-                  controller: controller,
-                  onDetect: (result) {
-                    controller.pause();
-
-                    final scannedData = result.barcodes.first.displayValue!;
-                    viewModel.checkInPersonnel(0, scannedData);
-                    print(scannedData);
-                  },
-                )
-              ),
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: Text('Scan to check in\n${state.scannedData}'),
-                )
-              ),
-            ],
+          AbsorbPointer(
+            absorbing: state.loadingCheckIn,
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: MobileScanner(
+                    controller: controller,
+                    onDetect: (result) {
+                      controller.pause();
+            
+                      final scannedData = result.barcodes.first.displayValue!;
+                      viewModel.checkInPersonnel(0, scannedData);
+                      print(scannedData);
+                    },
+                  )
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Text('Scan to check in\n${state.scannedData}'),
+                  )
+                ),
+              ],
+            ),
           ),
 
           if (state.loadingCheckIn)
