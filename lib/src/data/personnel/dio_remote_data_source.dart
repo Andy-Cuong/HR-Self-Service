@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:hr_self_service/src/data/services/dio_client.dart';
 import 'package:hr_self_service/src/data/services/storage_service.dart';
 import 'package:hr_self_service/src/domain/data_source/remote_data_source.dart';
+import 'package:hr_self_service/src/domain/models/leave_application.dart';
 import 'package:hr_self_service/src/domain/models/personnel.dart';
 import 'package:hr_self_service/src/domain/utils/hash.dart';
 
@@ -132,6 +133,28 @@ class DioRemoteDataSource implements RemoteDataSource {
       // Error handling
       print(e);
       return false;
+    }
+  }
+
+  @override
+  Future<String?> sendLeaveApplication(LeaveApplication leaveApplication) async {
+    try {
+      final response = await dioClient.dio.post(
+        'https://reqres.in/api/leave',
+        data: leaveApplication.toJson()
+      );
+
+      if (response.statusCode! > 299) {
+        print('Error: Code ${response.statusCode} - ${response.statusMessage}');
+        return null;
+      }
+
+      print('Successfully sent leave application. Application ID: ${leaveApplication.id}');
+      return leaveApplication.id!;
+    } on DioException catch (e) {
+      // Error handling
+      print(e);
+      return null;
     }
   }
 }

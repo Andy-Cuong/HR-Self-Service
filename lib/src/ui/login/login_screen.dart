@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hr_self_service/src/ui/login/login_action.dart';
 import 'package:hr_self_service/src/ui/login/login_provider.dart';
-import '../personnel/personnel_list_screen.dart';
+import 'package:hr_self_service/src/ui/navigation/navigation_root.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -29,7 +29,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         // Successful login
         if (mounted) {
           Navigator.of(context).pushReplacement( // Use push() to keep the departed screen on the nav stack
-            MaterialPageRoute(builder: (_) => const PersonnelListScreen())
+            MaterialPageRoute(builder: (_) => const NavigationRoot())
           );
         }
       }

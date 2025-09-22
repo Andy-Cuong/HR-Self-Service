@@ -1,3 +1,4 @@
+import 'package:hr_self_service/src/domain/models/leave_application.dart';
 import 'package:hr_self_service/src/domain/models/personnel.dart';
 
 abstract class PersonnelRepository {
@@ -8,4 +9,5 @@ abstract class PersonnelRepository {
   Future<int> updatePersonnel(int id, Personnel personnel);
   Future<int> deletePersonnel(int id);
   Future<bool> checkInPersonnel(int id, String qrCodeValue);
+  Future<String?> sendLeaveApplication(LeaveApplication leaveApplication);
 }

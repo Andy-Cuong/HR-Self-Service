@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:hr_self_service/src/domain/data_source/remote_data_source.dart';
+import 'package:hr_self_service/src/domain/models/leave_application.dart';
 import 'package:hr_self_service/src/domain/models/personnel.dart';
 import 'package:hr_self_service/src/domain/repository/personnel_repository.dart';
 import 'package:sqflite/sqflite.dart';
@@ -147,4 +148,8 @@ class SqflitePersonnelRepository implements PersonnelRepository {
   void dispose() {
     _personnelController.close();
   }
+
+  @override
+  Future<String?> sendLeaveApplication(LeaveApplication leaveApplication) =>
+    remoteDataSource.sendLeaveApplication(leaveApplication);
 }
