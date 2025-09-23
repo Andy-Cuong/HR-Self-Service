@@ -39,10 +39,6 @@ class LeaveViewModel extends Notifier<LeaveState> {
       reason: action.newReason,
       contact: action.newContact
     );
-
-    state = state.copy(
-      numberOfDays: state.endDate.difference(state.startDate).inDays + 1
-    );
   }
   
   void _sendLeaveApplication(OnSendClick action) async {

@@ -15,29 +15,41 @@ class LeaveState {
     this.leaveType = LeaveType.unpaid,
     DateTime? startDate,
     DateTime? endDate,
-    this.numberOfDays = 1,
     this.reason = '',
     this.contact = '',
     this.loading = false,
     this.applicationSent = false
   }) : startDate = startDate ?? DateTime.now(),
-       endDate = endDate ?? DateTime.now();
+       endDate = endDate ?? DateTime.now(),
+       numberOfDays = _differenceInDays(startDate, endDate);
+
+  static int _differenceInDays(DateTime? startDate, DateTime? endDate) {
+    final start = startDate ?? DateTime.now();
+    final end = endDate ?? DateTime.now();
+
+    if (end.isBefore(start)) {
+      return 0;
+    }
+
+    return end.difference(start).inDays + 1;
+  }
 
   LeaveState copy({
     LeaveType? leaveType,
     DateTime? startDate,
     DateTime? endDate,
-    int? numberOfDays,
     String? reason,
     String? contact,
     bool? loading,
     bool? applicationSent
   }) {
+    final newEndDate = endDate ?? this.endDate;
+    final newStartDate = startDate ?? this.startDate;
+
     return LeaveState(
       leaveType: leaveType ?? this.leaveType,
-      startDate: startDate ?? this.startDate,
-      endDate: endDate ?? this.endDate,
-      numberOfDays: numberOfDays ?? this.numberOfDays,
+      startDate: newStartDate,
+      endDate: newEndDate,
       reason: reason ?? this.reason,
       contact: contact ?? this.contact,
       loading: loading ?? this.loading,
