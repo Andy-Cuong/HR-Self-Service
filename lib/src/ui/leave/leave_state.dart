@@ -21,9 +21,9 @@ class LeaveState {
     this.applicationSent = false
   }) : startDate = startDate ?? DateTime.now(),
        endDate = endDate ?? DateTime.now(),
-       numberOfDays = _differenceInDays(startDate, endDate);
+       numberOfDays = _numberOfWeekdays(startDate, endDate);
 
-  static int _differenceInDays(DateTime? startDate, DateTime? endDate) {
+  static int _numberOfWeekdays(DateTime? startDate, DateTime? endDate) {
     final start = startDate ?? DateTime.now();
     final end = endDate ?? DateTime.now();
 
@@ -31,7 +31,18 @@ class LeaveState {
       return 0;
     }
 
-    return end.difference(start).inDays + 1;
+    int numberOfWeekdays = 0;
+    final numberOfDays = end.difference(start).inDays + 1;
+    for (var i = 0; i < numberOfDays; i++) {
+      final afterIDays = start.add(Duration(days: i));
+      if (afterIDays.weekday == 6 || afterIDays.weekday == 7) { // Exclude Sat and Sun
+        continue;
+      }
+
+      numberOfWeekdays++;
+    }
+
+    return numberOfWeekdays;
   }
 
   LeaveState copy({
