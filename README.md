@@ -1,4 +1,4 @@
-# hr_self_service
+# HR Self Service
 
 A new Flutter project.
 
