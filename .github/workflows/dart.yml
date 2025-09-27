@@ -11,16 +11,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get code
-        uses: actions/checkout@v5
+    - name: Get code
+      uses: actions/checkout@v5
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.35.4"
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.4'
 
-      - name: Install dependencies
-        run: flutter pub get
+    - name: Install dependencies
+      run: flutter pub get
 
-      - name: Run tests
-        run: flutter test
+    - name: Analyze code
+      run: flutter analyze
+
+    - name: Run tests
+      run: flutter test
+
+  build:
+    needs: test # Only build if all tests pass
+
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'ref/heads/main' # Only build on main branch
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Setup Java
+      uses: actions/setup-java@v5
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.4'
+
+    - run: flutter pub get
+
+    - name: Build APK
+      run: flutter build apk --debug
+
+    - name: Save APK
+      uses: actions/upload-artifact@v5
+      with:
+        name: app-debug
+        path: build/app/outputs/flutter-apk/app-debug.apk
