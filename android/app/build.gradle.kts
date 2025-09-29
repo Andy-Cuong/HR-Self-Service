@@ -41,6 +41,19 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+    flavorDimensions += "environment"
+    productFlavors {
+        create("staging") {
+            dimension = "environment"
+            applicationId = "com.andyc.hr_self_service.staging"
+            versionNameSuffix = "-staging"
+        }
+        create("production") {
+            dimension = "environment"
+            applicationId = "com.andyc.hr_self_service"
+        }
+    }
 }
 
 flutter {

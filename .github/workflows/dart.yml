@@ -32,12 +32,42 @@ jobs:
     - name: Run tests
       run: flutter test
 
-  build:
-    needs: test # Only build if all tests pass
-
+  build-staging:
+    needs: test
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    environment: staging # GitHub feature for deployment environments
 
+    steps:
+    - uses: actions/checkout@v5
+    - uses: actions/setup-java@v5
+      with:
+        distribution: 'temurin'
+        java-version: ${{ env.JAVA_VERSION }}
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+    - run: flutter pub get
+    
+    # - name: Configure Firebase for Staging
+    #   run: |
+    #     echo "${{ secrets.FIREBASE_OPTIONS_STAGING }}" > lib/firebase_options.dart
+
+    - name: Build Staging APK
+      run: flutter build apk --debug --flavor staging
+
+    - name: Save Staging APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: staging-apk
+        path: build/app/outputs/flutter-apk/*.apk
+
+  build-production:
+    needs: test # Only build if all tests pass
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' # Only build on main branch
+    environment: production
+
     steps:
     - uses: actions/checkout@v5
 
@@ -54,11 +84,15 @@ jobs:
 
     - run: flutter pub get
 
-    - name: Build APK
-      run: flutter build apk --debug
+    # - name: Configure Firebase for Production
+    #   run: |
+    #     echo "${{ secrets.FIREBASE_OPTIONS_PROD }}" > lib/firebase_options.dart
 
-    - name: Save APK
+    - name: Build Release APK
+      run: flutter build apk --release
+
+    - name: Save Release APK
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug
+        name: production-apk
         path: build/app/outputs/flutter-apk/app-debug.apk
