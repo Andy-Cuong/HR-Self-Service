@@ -55,7 +55,7 @@ class MockPersonnelAuthRepository implements PersonnelAuthRepository {
       return _currentPersonnel;
     } on DioException catch (e) {
       // Error handling
-      print(e.response);
+      print('Status code: ${e.response!.statusCode}\nResponse: ${e.response}');
       return null;
     }
   }

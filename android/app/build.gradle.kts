@@ -46,12 +46,12 @@ android {
     productFlavors {
         create("staging") {
             dimension = "environment"
-            applicationId = "com.andyc.hr_self_service.staging"
+            applicationId = "com.example.hr_self_service"
             versionNameSuffix = "-staging"
         }
         create("production") {
             dimension = "environment"
-            applicationId = "com.andyc.hr_self_service"
+            applicationId = "com.example.hr_self_service"
         }
     }
 }
